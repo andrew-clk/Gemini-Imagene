@@ -1,0 +1,5 @@
+{
+  "name": "Gemini Image Lab",
+  "description": "An AI-powered image generation and editing application. Generate variations of existing illustrations, merge elements from multiple images, or edit images by adding and removing objects using text prompts.",
+  "requestFramePermissions": []
+}
