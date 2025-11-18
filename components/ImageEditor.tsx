@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ImageFile } from '../types';
 import ImageUploader from './ImageUploader';
@@ -23,10 +22,15 @@ const ImageEditor: React.FC<ImageEditorProps> = ({ title, description, maxFiles,
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
 
   const handleGenerate = async () => {
-    if (imageFiles.length === 0 || !prompt) {
-      setError('Please upload at least one image and provide a prompt.');
+    if (maxFiles > 0 && imageFiles.length === 0) {
+      setError('Please upload at least one image to proceed.');
       return;
     }
+    if (!prompt) {
+      setError('Please provide a prompt.');
+      return;
+    }
+
 
     setIsLoading(true);
     setError(null);
@@ -81,12 +85,14 @@ const ImageEditor: React.FC<ImageEditorProps> = ({ title, description, maxFiles,
         </div>
         
         <div className="space-y-4">
-          <div>
-            <label htmlFor="image-upload" className="block text-sm font-medium text-gray-300 mb-2">
-              Upload Image(s)
-            </label>
-            <ImageUploader id="image-upload" files={imageFiles} onFilesChange={setImageFiles} maxFiles={maxFiles} />
-          </div>
+          {maxFiles > 0 && (
+            <div>
+              <label htmlFor="image-upload" className="block text-sm font-medium text-gray-300 mb-2">
+                Upload Image(s)
+              </label>
+              <ImageUploader id="image-upload" files={imageFiles} onFilesChange={setImageFiles} maxFiles={maxFiles} />
+            </div>
+          )}
 
           <div>
             <label htmlFor="prompt" className="block text-sm font-medium text-gray-300 mb-2">
@@ -94,7 +100,7 @@ const ImageEditor: React.FC<ImageEditorProps> = ({ title, description, maxFiles,
             </label>
             <textarea
               id="prompt"
-              rows={4}
+              rows={maxFiles > 0 ? 4 : 8}
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               placeholder={promptPlaceholder}
@@ -105,7 +111,7 @@ const ImageEditor: React.FC<ImageEditorProps> = ({ title, description, maxFiles,
 
         <button
           onClick={handleGenerate}
-          disabled={isLoading || imageFiles.length === 0 || !prompt}
+          disabled={isLoading || (maxFiles > 0 && imageFiles.length === 0) || !prompt}
           className="w-full flex justify-center items-center bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors"
         >
           {isLoading ? (

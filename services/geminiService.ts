@@ -39,15 +39,25 @@ export const generateImage = async (prompt: string, images: ImageData[]): Promis
             throw new Error("No candidates returned from the API.");
         }
 
-        for (const part of candidates[0].content.parts) {
-            if (part.inlineData) {
-                const base64ImageBytes: string = part.inlineData.data;
-                // Assuming PNG output, as it's common for this model. Adjust if needed.
-                return `data:image/png;base64,${base64ImageBytes}`;
+        const candidate = candidates[0];
+
+        if (candidate.content && candidate.content.parts) {
+            for (const part of candidate.content.parts) {
+                if (part.inlineData) {
+                    const base64ImageBytes: string = part.inlineData.data;
+                    return `data:image/png;base64,${base64ImageBytes}`;
+                }
             }
         }
 
+        // If no image data was found, or if content/parts were missing, throw an error.
+        // Include finishReason if available for better debugging.
+        if (candidate.finishReason && candidate.finishReason !== 'STOP') {
+            throw new Error(`Image generation failed due to: ${candidate.finishReason}. Your prompt may have been blocked.`);
+        }
+
         throw new Error("No image data found in the API response.");
+
     } catch (error: any) {
         console.error("Error calling Gemini API:", error);
         throw new Error(`Failed to generate image: ${error.message}`);

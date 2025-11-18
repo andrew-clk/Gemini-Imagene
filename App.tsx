@@ -1,14 +1,15 @@
 import React, { useState, useCallback } from 'react';
-import { SparklesIcon, ScissorsIcon, LayersIcon, GithubIcon, BrushIcon, CopyIcon } from './components/Icons';
+import { SparklesIcon, ScissorsIcon, LayersIcon, GithubIcon, BrushIcon, CopyIcon, WandIcon } from './components/Icons';
 import ImageEditor from './components/ImageEditor';
 import StyleTransferEditor from './components/StyleTransferEditor';
 import BulkProcessEditor from './components/BulkProcessEditor';
 import { EditorMode } from './types';
 
 const App: React.FC = () => {
-  const [mode, setMode] = useState<EditorMode>(EditorMode.VARIATIONS);
+  const [mode, setMode] = useState<EditorMode>(EditorMode.IMAGE_GENERATION);
 
   const TABS = [
+    { id: EditorMode.IMAGE_GENERATION, name: 'Generate Image', icon: <WandIcon className="w-5 h-5 mr-2" /> },
     { id: EditorMode.VARIATIONS, name: 'Generate Variations', icon: <SparklesIcon className="w-5 h-5 mr-2" /> },
     { id: EditorMode.MERGE, name: 'Merge Images', icon: <LayersIcon className="w-5 h-5 mr-2" /> },
     { id: EditorMode.EDIT, name: 'Edit Image', icon: <ScissorsIcon className="w-5 h-5 mr-2" /> },
@@ -18,6 +19,13 @@ const App: React.FC = () => {
 
   const getEditorConfig = useCallback((currentMode: EditorMode) => {
     switch (currentMode) {
+      case EditorMode.IMAGE_GENERATION:
+        return {
+          title: "Generate Business Graphics",
+          description: "Create icons, logos, or illustrations for your business from a text prompt.",
+          maxFiles: 0,
+          promptPlaceholder: "e.g., a modern logo for a tech startup called 'Innovate', minimalist vector icon of a lightbulb, flat illustration of a team collaborating"
+        };
       case EditorMode.VARIATIONS:
         return {
           title: "Generate Image Variations",

@@ -1,4 +1,5 @@
 export enum EditorMode {
+  IMAGE_GENERATION = 'image_generation',
   VARIATIONS = 'variations',
   MERGE = 'merge',
   EDIT = 'edit',

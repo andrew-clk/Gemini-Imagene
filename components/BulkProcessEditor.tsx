@@ -86,7 +86,7 @@ const BulkProcessEditor: React.FC<BulkProcessEditorProps> = ({ title, descriptio
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               placeholder={promptPlaceholder}
-              className="w-full h-full bg-gray-800 border border-gray-600 rounded-lg p-3 text-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+              className="w-full bg-gray-800 border border-gray-600 rounded-lg p-3 text-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
             />
           </div>
         </div>
